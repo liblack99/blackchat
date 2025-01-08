@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {AppDispatch} from "../store/store";
 import {registerUser} from "../slices/authSlice";
 import {useNavigate} from "react-router-dom";
-import storage from "../../firebase";
+import storage from "../firebase";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import capitalizeWords from "../utils/capitalizeWords";
 
