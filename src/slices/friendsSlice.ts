@@ -22,6 +22,7 @@ interface FriendsState {
   error: string | null;
   friendChatId: number;
   status: boolean;
+  filterFriend: Friend[];
 }
 
 // Initial state
@@ -35,6 +36,7 @@ const initialState: FriendsState = {
   query: "",
   friendChatId: 0,
   status: false,
+  filterFriend: [],
 };
 
 // Create slice
@@ -87,6 +89,15 @@ const friendsSlice = createSlice({
     addSendFriendRequest: (state, action: PayloadAction<number>) => {
       state.sentRequests.push(action.payload);
     },
+    filterFriendsByName: (state, action: PayloadAction<string>) => {
+      if (action.payload) {
+        state.filterFriend = state.friends.filter((friend) =>
+          friend.username.toLowerCase().includes(action.payload.toLowerCase())
+        );
+      } else {
+        state.filterFriend = state.friends;
+      }
+    },
   },
 });
 
@@ -102,6 +113,7 @@ export const {
   updatePendingRequests,
   addSendFriendRequest,
   addFriend,
+  filterFriendsByName,
 } = friendsSlice.actions;
 
 export const fetchFriends =

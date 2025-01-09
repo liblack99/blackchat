@@ -6,10 +6,11 @@ import {useEffect} from "react";
 import {fetchUserData} from "../slices/authSlice";
 import {useDispatch} from "react-redux";
 import {
-  fetchPendingRequests,
-  fetchFriends,
+  setPendingRequests,
+  filterFriendsByName,
   setStatus,
   setFriendChatId,
+  fetchFriends,
 } from "../slices/friendsSlice";
 import {useSelector} from "react-redux";
 import {RootState} from "../store/store";
@@ -28,7 +29,7 @@ const Home: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const {user, loading, token} = useSelector((state: RootState) => state.auth);
 
-  const {pendingRequests, friendChatId, friends} = useSelector(
+  const {friendChatId, filterFriend, friends} = useSelector(
     (state: RootState) => state.friends
   );
 
@@ -38,29 +39,37 @@ const Home: React.FC = () => {
 
     socket.emit("checkUserConnection", friendChatId);
 
+    socket.on("receiveMessage", (message) => {
+      dispatch(addMessage(message));
+    });
+
+    socket.emit("getPendingRequests");
+
+    socket.on("pendingRequests", (data) => {
+      dispatch(setPendingRequests(data));
+    });
+
     socket.on("userConnectionStatus", (isConnected) => {
       dispatch(setStatus(isConnected));
     });
 
     socket.on("messageSent", (message) => {
-      console.log(message);
       dispatch(addMessage(message));
     });
-  }, [user, friends, friendChatId]);
+  }, [user, friendChatId, token]);
 
   useEffect(() => {
-    dispatch(fetchUserData()); // Llamar a la acción para obtener los datos del usuario
+    dispatch(fetchUserData());
   }, [dispatch]);
 
   useEffect(() => {
     if (!user) return;
-    dispatch(fetchPendingRequests(user?.id));
+    dispatch(fetchFriends(user?.id));
   }, [user]);
 
   useEffect(() => {
-    if (!user) return;
-    dispatch(fetchFriends(user?.id));
-  }, [user, pendingRequests]);
+    dispatch(filterFriendsByName(""));
+  }, [friends]);
 
   const profileCurrentFRiend = friends.find(
     (friend) => friend.friend_id === friendChatId
@@ -87,6 +96,11 @@ const Home: React.FC = () => {
     );
   }
 
+  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value.trim();
+    dispatch(filterFriendsByName(name));
+  };
+
   return (
     <>
       <Header />
@@ -98,7 +112,7 @@ const Home: React.FC = () => {
           } lg:block animate-fadeInUp`}>
           <Aside>
             <CardProfile />
-            <SearchFriends />
+            <SearchFriends onChangeName={(e) => onChangeName(e)} />
             {friends.length === 0 && (
               <div className="w-full h-full flex flex-col justify-center items-center gap-4">
                 <p className="text-center text-4xl font-bold">
@@ -106,22 +120,19 @@ const Home: React.FC = () => {
                 </p>
               </div>
             )}
-            <div className="w-full flex flex-col gap-2  items-center">
-              {friends.map((friend) => (
-                <div key={friend.id} className="cursor-pointer w-[90%]">
-                  <FriendsCards
-                    friend_id={friend.friend_id}
-                    profileImage={friend.profileImage}
-                    username={friend.username}
-                    handleClick={handleFriendClick}
-                  />
-                </div>
+            <div className="w-full h-full flex flex-col gap-2 items-center overflow-hidden overflow-y-scroll ">
+              {filterFriend.map((friend) => (
+                <FriendsCards
+                  key={friend.id}
+                  friend_id={friend.friend_id}
+                  profileImage={friend.profileImage}
+                  username={friend.username}
+                  handleClick={handleFriendClick}
+                />
               ))}
             </div>
           </Aside>
         </Section>
-
-        {/* Sección de Chat */}
         <Section
           className={`h-full w-full  ${
             activeSection === "chat" ? "block animate-fadeInLeft" : "hidden"
@@ -131,8 +142,6 @@ const Home: React.FC = () => {
             handleClickClose={handleClickClose}
           />
         </Section>
-
-        {/* Sección de Perfil del Amigo */}
         <Section
           className={`w-full h-full lg:block lg:animate-fadeInUp ${
             activeSection === "profile" ? "block animate-fadeInLeft" : "hidden"

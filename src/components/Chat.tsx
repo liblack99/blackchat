@@ -69,12 +69,12 @@ const Chat: React.FC<PropsChat> = ({handleClick, handleClickClose}) => {
               w-3 h-3 rounded-full`}></div>
           </div>
           <button
-            className="absolute top-5 right-4"
+            className="absolute top-6 right-4"
             onClick={() => handleClickClose()}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 384 512"
-              width={14}>
+              width={16}>
               <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
             </svg>
           </button>
@@ -118,9 +118,15 @@ const Chat: React.FC<PropsChat> = ({handleClick, handleClickClose}) => {
             className="w-full flex justify-center items-center p-2 bg-white">
             <textarea
               name="messages"
-              className="flex-1 p-2 rounded-l-full border-none  max-h-40 h-10 resize-none"
+              className="flex-1 p-2 rounded-lg border-none  max-h-40 h-10 resize-none"
               value={messages}
               onChange={(e) => setMessages(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }
+              }}
               placeholder="Escribe un mensaje..."
             />
             <button

@@ -70,29 +70,26 @@ const FriendsCards: React.FC<PropsFriend> = ({
 
   return (
     <div
-      className="w-full border-b-2 border-gray-400 py-2 cursor-pointer hover:bg-gray-100"
+      className="w-full py-3 cursor-pointer hover:scale-105 transition-all duration-300 shadow"
       onClick={() => handleCardClick(friend_id)}>
-      <div className="flex items-center pl-3 gap-2">
-        <div className="w-20 h-20 border border-1 rounded-full overflow-hidden aspect-w-1 aspect-h-1">
+      <div className="flex items-center pl-4 gap-3">
+        <div className="w-16 h-16 border-2 border-gray-400 rounded-full overflow-hidden">
           <img
             src={profileImage}
-            alt="foto"
+            alt="Profile"
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="flex-1">
-          <h2 className="text-extrabold text-2xl">{username}</h2>
+        <div className="flex-1 text-black">
+          <h2 className="text-lg font-semibold">{username}</h2>
           <div className="flex justify-between items-center">
-            <p className="text-md text-gray-600 min-h-[24px]">
+            <p className="text-md h-6 text-gray-600 truncate max-w-[75%]">
               {message?.sender_id === user?.id
-                ? `You:${message?.content} `
+                ? `You: ${message?.content}`
                 : message?.content}
             </p>
-            {message?.delivered === 0 &&
-              message.sender_id === user?.id &&
-              undefined}
-            {message?.delivered === 0 && message.sender_id !== user?.id && (
-              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+            {message?.delivered === 0 && message?.sender_id !== user?.id && (
+              <div className="w-2.5 h-2.5 bg-blue-500 rounded-full"></div>
             )}
           </div>
         </div>
