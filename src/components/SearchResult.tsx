@@ -1,7 +1,6 @@
 import React from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {
-  sendFriendRequest,
   acceptFriendRequest,
   rejectFriendRequest,
   updatePendingRequests,
@@ -10,6 +9,7 @@ import {
 } from "../slices/friendsSlice";
 import {RootState} from "../store/store";
 import {AppDispatch} from "../store/store";
+import {getSocket} from "../utils/socket";
 
 interface SearchResultProps {
   title: string; // Prop para distinguir entre los modos
@@ -31,9 +31,12 @@ const SearchResult: React.FC<SearchResultProps> = ({title}) => {
 
   const {loading, user} = useSelector((state: RootState) => state.auth);
 
-  const handleSendRequest = (userId: number | unknown, friendId: number) => {
-    dispatch(sendFriendRequest(userId, friendId));
+  const handleSendRequest = (friendId: number) => {
     dispatch(addSendFriendRequest(friendId));
+    const socket = getSocket();
+    if (socket) {
+      socket.emit("sendFriendRequest", friendId);
+    }
   };
 
   const handleAcceptRequest = (request: Friend) => {
@@ -57,7 +60,7 @@ const SearchResult: React.FC<SearchResultProps> = ({title}) => {
 
   return (
     <div className="max-w-72 w-80 min-h-10 h-auto bg-white rounded-lg shadow-md border-1 border-black flex flex-col justify-center items-center">
-      <ul className="flex flex-col justify-center mt-2 font-bold gap-2 w-full">
+      <ul className="flex flex-col justify-center font-bold gap-2 w-full">
         {listToRender.length !== 0 ? (
           listToRender.map((result) => {
             const isSelf = user?.id === result.id;
@@ -80,7 +83,7 @@ const SearchResult: React.FC<SearchResultProps> = ({title}) => {
                 {title === "Send Friend Requests" ? (
                   // Botón para enviar solicitudes de amistad
                   <button
-                    onClick={() => handleSendRequest(user?.id, result.id)}
+                    onClick={() => handleSendRequest(result.id)}
                     disabled={isSelf || isFriend}
                     className={`border-1 border-black bg-black text-white px-2 py-1 rounded text-sm w-24 ${
                       isSelf || isFriend || hasSentRequest
@@ -112,11 +115,13 @@ const SearchResult: React.FC<SearchResultProps> = ({title}) => {
             );
           })
         ) : (
-          <p className="pl-2 text-sm text-center">
-            {title === "Send Friend Requests"
-              ? "No se encontraron resultados"
-              : "No tiene solicitudes pendientes"}
-          </p>
+          <div className="flex justify-center items-center w-full h-14">
+            <p className="p-2 text-md text-center ">
+              {title === "Send Friend Requests"
+                ? "No results were found."
+                : "You have no pending requests."}
+            </p>
+          </div>
         )}
       </ul>
     </div>

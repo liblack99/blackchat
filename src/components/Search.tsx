@@ -17,7 +17,6 @@ const Search: React.FC = () => {
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <input
-        id="searchInput"
         type="text"
         className="rounded p-2 w-72 h-8"
         placeholder="Search friends"

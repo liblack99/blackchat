@@ -39,7 +39,7 @@ const Header: React.FC = () => {
         </div>
       )}
       <div className="flex justify-center items-center absolute right-2 gap-2">
-        <div className="absolute -bottom-14 -right-0 z-10">
+        <div className="absolute -bottom-[70px] -right-0 z-10">
           {openRequest && <SearchResult title={""} />}
         </div>
 

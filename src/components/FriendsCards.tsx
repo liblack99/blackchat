@@ -34,6 +34,7 @@ const FriendsCards: React.FC<PropsFriend> = ({
   handleClick,
 }) => {
   const {user, token} = useSelector((state: RootState) => state.auth);
+  const {friends} = useSelector((state: RootState) => state.friends);
   const {conversation} = useSelector((state: RootState) => state.messages);
   const [message, setMessage] = useState<Message>();
 
@@ -66,11 +67,11 @@ const FriendsCards: React.FC<PropsFriend> = ({
       }
     };
     getLatestMessage();
-  }, [conversation]);
+  }, [conversation, friends]);
 
   return (
     <div
-      className="w-full py-3 cursor-pointer hover:scale-105 transition-all duration-300 shadow"
+      className="w-full py-3 cursor-pointer hover:scale-105 transition-all duration-300 shadow rounded-lg "
       onClick={() => handleCardClick(friend_id)}>
       <div className="flex items-center pl-4 gap-3">
         <div className="w-16 h-16 border-2 border-gray-400 rounded-full overflow-hidden">
@@ -89,7 +90,7 @@ const FriendsCards: React.FC<PropsFriend> = ({
                 : message?.content}
             </p>
             {message?.delivered === 0 && message?.sender_id !== user?.id && (
-              <div className="w-2.5 h-2.5 bg-blue-500 rounded-full"></div>
+              <div className="w-2.5 h-2.5 bg-blue-500 rounded-full mr-2"></div>
             )}
           </div>
         </div>

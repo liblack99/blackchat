@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import storage from "../firebase";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import capitalizeWords from "../utils/capitalizeWords";
+import Compressor from "compressorjs";
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -20,21 +21,31 @@ const Register: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const MAX_FILE_SIZE = 100 * 1024; // 100 KB en bytes
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
 
-      // Validar el tamaño del archivo
-      if (selectedFile.size > MAX_FILE_SIZE) {
-        setError("El tamaño del archivo no debe exceder los 100 KB.");
-        setFile(null); // Limpiar el archivo si excede el tamaño
-        return;
+      if (selectedFile) {
+        new Compressor(selectedFile, {
+          quality: 0.6,
+          maxWidth: 800,
+          maxHeight: 800,
+          success(result) {
+            const fileResult = new File([result], selectedFile.name, {
+              type: result.type,
+              lastModified: Date.now(),
+            });
+
+            setFile(fileResult);
+          },
+          error(err) {
+            console.error(err);
+            setError("Error compressing the image. Try again.");
+          },
+        });
       }
 
-      setFile(selectedFile);
-      setError(""); // Limpiar cualquier error anterior
+      setError("");
     }
   };
 

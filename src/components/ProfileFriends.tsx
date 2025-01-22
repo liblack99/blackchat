@@ -15,14 +15,21 @@ const ProfileFriends: React.FC<Friend> = ({
 }) => {
   const {conversation} = useSelector((state: RootState) => state.messages);
   const {user} = useSelector((state: RootState) => state.auth);
+  const {friendChatId, friends} = useSelector(
+    (state: RootState) => state.friends
+  );
 
   const [message, setMessage] = useState<string>("");
 
   const filterConversation = message
     ? conversation.filter((msg) =>
-        msg.content.toLowerCase().includes(message.toLowerCase())
+        msg.content.toLowerCase().includes(message.toLowerCase().trim())
       )
     : [];
+
+  const currentFriendId = friends.find(
+    (friend) => friend.friend_id == friendChatId
+  );
   return (
     <div className="flex w-full h-full justify-start items-center flex-col gap-6 relative">
       <button
@@ -48,32 +55,41 @@ const ProfileFriends: React.FC<Friend> = ({
         className="p-2 w-[70%] h-10 border-2 border-black shadow-sm rounded-full"
         placeholder="search Messages"
         value={message}
-        onChange={(e) => setMessage(e.target.value.trim())}
+        onChange={(e) => setMessage(e.target.value)}
       />
-      <div className="w-[70%] h-72 border-2 bg-slate-200 border-double rounded-lg shadow">
-        <ul className="flex flex-col gap-4 p-4">
+      <div className="w-[70%] h-72 border-2 bg-slate-200 border-double rounded-lg shadow overflow-hidden overflow-y-scroll">
+        <ul className="flex flex-col gap-4 p-4 ">
           {/* Solo se muestran los mensajes si hay texto en el campo de búsqueda */}
           {message && filterConversation.length > 0 ? (
             filterConversation.map((msg) => (
               <li
                 className={`${
-                  msg.sender_id === user?.id
+                  msg.sender_id == user?.id
                     ? "self-end flex justify-center items-end gap-1"
                     : "self-start flex flex-row-reverse justify-center items-end gap-1"
                 }`}
                 key={msg.id}>
                 <p
                   className={`max-w-[80%] px-4 py-2  text-lg  ${
-                    msg.sender_id === user?.id
+                    msg.sender_id == user?.id
                       ? "bg-black text-white  rounded-tl-lg rounded-tr-lg rounded-bl-lg"
                       : "bg-gray-300 text-black rounded-tl-lg rounded-tr-lg rounded-br-lg"
                   }`}>
                   {msg.content}
                 </p>
+                <img
+                  src={
+                    msg.sender_id == user?.id
+                      ? user.profileImage
+                      : currentFriendId?.profileImage
+                  }
+                  className="w-8 rounded-full h-8 object-cover"
+                  alt="foto de usuarios"
+                />
               </li>
             ))
           ) : (
-            <p className="text-center text-gray-600">
+            <div className="text-center text-gray-600">
               {message ? (
                 "No messages found."
               ) : (
@@ -88,7 +104,7 @@ const ProfileFriends: React.FC<Friend> = ({
                   <p className="text-gray-400">"Search for messages."</p>{" "}
                 </div>
               )}
-            </p>
+            </div>
           )}
         </ul>
       </div>

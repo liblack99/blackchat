@@ -6,6 +6,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 interface User {
   id: number;
+  email: string;
   username: string;
   profileImage: string;
 }
@@ -35,6 +36,13 @@ const initialState: AuthState = {
   loading: false,
   error: null,
 };
+interface UpdateUserData {
+  fullName?: string;
+  email?: string;
+  profileImage?: string;
+  currentPassword?: string;
+  newPassword?: string;
+}
 
 const authSlice = createSlice({
   name: "auth",
@@ -138,3 +146,46 @@ export const fetchUserData = () => async (dispatch: AppDispatch) => {
     }
   }
 };
+
+export const updateUserData =
+  (userData: UpdateUserData) => async (dispatch: AppDispatch) => {
+    dispatch(startLoading());
+
+    const token = localStorage.getItem("token"); // Obtener el token desde el almacenamiento local
+
+    if (!token) {
+      dispatch(setError("Token no encontrado"));
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `${API_URL}/api/auth/user/update`,
+        userData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Pasar el token en la cabecera
+          },
+        }
+      );
+
+      // Actualizar el estado con los nuevos datos del usuario
+      dispatch(setAuth({token, user: response.data}));
+
+      return response.data;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        dispatch(
+          setError(
+            error.response?.data || "Error al actualizar los datos del usuario"
+          )
+        );
+        throw new Error(
+          error.response?.data || "Error al actualizar los datos del usuario"
+        );
+      } else {
+        dispatch(setError("Error desconocido"));
+        throw new Error("Error desconocido");
+      }
+    }
+  };

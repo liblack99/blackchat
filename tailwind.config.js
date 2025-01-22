@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        roboto: ["Roboto", "sans-serif"], // Agrega Roboto como fuente personalizada
+        roboto: ["Roboto", "sans-serif"],
+        dosis: ["Dosis", "sans-serif"], // Agrega Roboto como fuente personalizada
       },
       keyframes: {
         fadeInLeft: {

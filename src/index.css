@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 body {
-  @apply font-roboto;
+  @apply font-dosis;
   background-color: #ffffff;
 }
