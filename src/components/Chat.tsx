@@ -58,11 +58,25 @@ const Chat: React.FC<PropsChat> = ({handleClick, handleClickClose}) => {
           <div
             className=" w-full h-20 shadow-lg bg-white flex items-center gap-2 pl-4 border-b-2 "
             onClick={() => handleClick()}>
-            <img
-              src={currentFriendId?.profileImage}
-              className="w-12 h-12 object-cover rounded-full"
-              alt={`foto de perfil de ${currentFriendId?.username}`}
-            />
+            <div className="w-12 h-12 rounded-full bg-[#e5e7eb] border border-1 ">
+              {currentFriendId?.profileImage ? (
+                <img
+                  src={currentFriendId?.profileImage}
+                  className="w-full h-full object-cover "
+                  alt={`Profile photo ${currentFriendId?.username}`}
+                />
+              ) : (
+                <div className="w-full h-full flex justify-center items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512"
+                    height={28}
+                    fill="white">
+                    <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
+                  </svg>
+                </div>
+              )}
+            </div>
             <h2 className="font-bold text-2xl">{currentFriendId?.username}</h2>
             <div
               className={`${status ? "bg-green-400" : "bg-red-600"} 

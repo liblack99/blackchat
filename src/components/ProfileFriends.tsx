@@ -43,11 +43,25 @@ const ProfileFriends: React.FC<Friend> = ({
         </svg>
         <p className="text-sm">Back</p>
       </button>
-      <img
-        src={profileImage}
-        alt={`photo de perfil ${username}`}
-        className="w-60 h-60 rounded-full mt-24 object-cover"
-      />
+      <div className="w-60 h-60 mt-24 bg-white rounded-full border border-1 ">
+        {profileImage ? (
+          <img
+            src={profileImage}
+            alt={`Profile photo ${username}`}
+            className="h-full w-full  object-cover"
+          />
+        ) : (
+          <div className="w-full h-full flex justify-center items-center ">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512"
+              height={144}
+              fill="#e5e7eb">
+              <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
+            </svg>
+          </div>
+        )}
+      </div>
       <h2 className="text-4xl">{username}</h2>
       <input
         id="searchMessage"
