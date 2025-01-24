@@ -139,7 +139,6 @@ const Register: React.FC = () => {
           accept="image/*"
           className="border border-gray-300 p-2 my-2 w-full"
           onChange={handleFileChange}
-          required
         />
         <button
           className="w-full p-2 bg-black text-white rounded-md mt-4"
