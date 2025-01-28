@@ -43,7 +43,7 @@ const ProfileFriends: React.FC<Friend> = ({
         </svg>
         <p className="text-sm">Back</p>
       </button>
-      <div className="w-60 h-60 mt-24 bg-white rounded-full border border-1 ">
+      <div className="w-60 h-60 mt-24 bg-white rounded-full border border-1 overflow-hidden ">
         {profileImage ? (
           <img
             src={profileImage}

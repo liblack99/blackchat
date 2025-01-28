@@ -18,7 +18,7 @@ const Search: React.FC = () => {
     <form onSubmit={(e) => e.preventDefault()}>
       <input
         type="text"
-        className="rounded p-2 w-72 h-8"
+        className="rounded p-2 w-72 h-6 "
         placeholder="Search friends"
         value={query}
         onChange={handleSearchChange}

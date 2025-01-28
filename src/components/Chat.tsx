@@ -58,7 +58,7 @@ const Chat: React.FC<PropsChat> = ({handleClick, handleClickClose}) => {
           <div
             className=" w-full h-20 shadow-lg bg-white flex items-center gap-2 pl-4 border-b-2 "
             onClick={() => handleClick()}>
-            <div className="w-12 h-12 rounded-full bg-[#e5e7eb] border border-1 ">
+            <div className="w-12 h-12 rounded-full bg-[#e5e7eb] border border-1 overflow-hidden">
               {currentFriendId?.profileImage ? (
                 <img
                   src={currentFriendId?.profileImage}

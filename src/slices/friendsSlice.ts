@@ -1,7 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import axios from "axios";
 import {AppDispatch} from "../store/store";
-
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Define your state types

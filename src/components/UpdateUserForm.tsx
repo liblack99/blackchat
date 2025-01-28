@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {updateUserData} from "../slices/authSlice";
+import {updateUserData, fetchUserData} from "../slices/authSlice";
 import {AppDispatch, RootState} from "../store/store";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import storage from "../firebase";
@@ -87,6 +87,7 @@ const UpdateUserForm: React.FC<PropForm> = ({handleFormClick}) => {
         };
 
         await dispatch(updateUserData(updatedData));
+        await dispatch(fetchUserData());
         handleFormClick();
       } catch (err) {
         console.error("Error updating information:", err);
@@ -109,13 +110,23 @@ const UpdateUserForm: React.FC<PropForm> = ({handleFormClick}) => {
       </button>
       <div className="place-self-center relative">
         <label className="cursor-pointer ">
-          <div className="flex items-center space-x-4">
-            {previewImage && (
+          <div className="w-40 h-40 border border-1  rounded-full flex items-center space-x-4 overflow-hidden">
+            {previewImage ? (
               <img
                 src={previewImage}
-                alt="Imagen de perfil"
-                className="w-28 h-28 rounded-full object-cover"
+                alt={`Profile photo ${formData.fullName}`}
+                className="h-full w-full  object-cover"
               />
+            ) : (
+              <div className="w-full h-full flex justify-center items-center ">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 448 512"
+                  height={100}
+                  fill="#e5e7eb">
+                  <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
+                </svg>
+              </div>
             )}
           </div>
 
