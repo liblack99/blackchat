@@ -6,7 +6,7 @@ Este proyecto es una aplicación de chat en tiempo real diseñada para garantiza
 Puedes ver el proyecto desplegado [aquí](https://blackchat-app.vercel.app/).
 
 ## Capturas de pantalla
-(Agrega aquí imágenes representativas de tu aplicación).
+![blackchat](https://firebasestorage.googleapis.com/v0/b/pelagic-earth-407809.appspot.com/o/proyectos%2Fchat.webp?alt=media&token=2b64b584-1048-4fad-990b-e54311dc4607)
 
 ## Características
 - **Mensajería en Tiempo Real**: Comunicación instantánea mediante websockets.
