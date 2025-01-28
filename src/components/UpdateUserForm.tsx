@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {updateUserData, fetchUserData} from "../slices/authSlice";
+import {updateUserData} from "../slices/authSlice";
 import {AppDispatch, RootState} from "../store/store";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import storage from "../firebase";
@@ -87,7 +87,7 @@ const UpdateUserForm: React.FC<PropForm> = ({handleFormClick}) => {
         };
 
         await dispatch(updateUserData(updatedData));
-        await dispatch(fetchUserData());
+
         handleFormClick();
       } catch (err) {
         console.error("Error updating information:", err);

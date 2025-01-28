@@ -149,8 +149,6 @@ export const fetchUserData = () => async (dispatch: AppDispatch) => {
 
 export const updateUserData =
   (userData: UpdateUserData) => async (dispatch: AppDispatch) => {
-    dispatch(startLoading());
-
     const token = localStorage.getItem("token"); // Obtener el token desde el almacenamiento local
 
     if (!token) {
@@ -169,10 +167,9 @@ export const updateUserData =
         }
       );
 
-      // Actualizar el estado con los nuevos datos del usuario
       dispatch(setAuth({token, user: response.data}));
 
-      return response.data;
+      console.log(response.data);
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         dispatch(
