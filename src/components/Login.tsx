@@ -33,7 +33,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="w-[400px] mx-auto mt-10 p-6 border rounded-lg shadow-md">
+    <div className="w-[94%] sm:W-[94%] md:w-[400px] lg:w-[400px] mx-auto mt-10 p-6 border rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-center ">Login</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

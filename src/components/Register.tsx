@@ -90,7 +90,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="w-[400px] mx-auto mt-10 p-6 border rounded-lg shadow-md">
+    <div className="w-[94%] sm:W-[94%] md:w-[400px] lg:w-[400px] mx-auto mt-10 p-6 border rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-center">Register</h2>
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleRegister}>
@@ -134,12 +134,15 @@ const Register: React.FC = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-        <input
-          type="file"
-          accept="image/*"
-          className="border border-gray-300 p-2 my-2 w-full"
-          onChange={handleFileChange}
-        />
+        <label className="block text-sm text-gray-600 my-2">
+          Profile Image (optional)
+          <input
+            type="file"
+            accept="image/*"
+            className="border border-gray-300 p-2 my-2 w-full"
+            onChange={handleFileChange}
+          />
+        </label>
         <button
           className="w-full p-2 bg-black text-white rounded-md mt-4"
           type="submit"

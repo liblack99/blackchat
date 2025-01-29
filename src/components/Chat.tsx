@@ -105,22 +105,46 @@ const Chat: React.FC<PropsChat> = ({handleClick, handleClickClose}) => {
                   }`}
                   key={msg.id}>
                   <p
-                    className={`max-w-[80%] px-4 py-2  text-lg  ${
+                    className={`max-w-[210px] px-4 py-2 text-start text-lg break-words  ${
                       msg.sender_id == user?.id
                         ? "bg-black text-white  rounded-tl-lg rounded-tr-lg rounded-bl-lg"
                         : "bg-gray-300 text-black rounded-tl-lg rounded-tr-lg rounded-br-lg"
                     }`}>
                     {msg.content}
                   </p>
-                  <img
-                    src={
-                      msg.sender_id == user?.id
-                        ? user.profileImage
-                        : currentFriendId?.profileImage
-                    }
-                    className="w-8 rounded-full h-8 object-cover"
-                    alt="foto de usuarios"
-                  />
+                  <div className="w-8 rounded-full h-8 overflow-hidden bg-white flex justify-center items-center">
+                    {msg.sender_id == user?.id ? (
+                      user?.profileImage ? (
+                        <img
+                          src={user.profileImage}
+                          className="h-full w-full object-cover"
+                          alt="foto de usuario"
+                        />
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 448 512"
+                          height={18}
+                          fill="#e5e7eb">
+                          <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
+                        </svg>
+                      )
+                    ) : currentFriendId?.profileImage ? (
+                      <img
+                        src={currentFriendId.profileImage}
+                        className="h-full w-full object-cover"
+                        alt="foto de usuario"
+                      />
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 448 512"
+                        height={18}
+                        fill="#e5e7eb">
+                        <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
+                      </svg>
+                    )}
+                  </div>
                 </li>
               ))}
             </ul>

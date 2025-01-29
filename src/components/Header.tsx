@@ -31,7 +31,7 @@ const Header: React.FC = () => {
   return (
     <header className="bg-black w-full h-14  flex gap-4 justify-center items-center ">
       <h1 className="text-2xl sm:text-2xl md:text-4xl lg:text-4xl  text-white place-items-end">
-        Black Chat
+        BlackChat
       </h1>
       {query && !openRequest && (
         <div className="absolute top-16 right-14 hidden sm:hidden md:hidden lg:flex z-10 h-auto">
